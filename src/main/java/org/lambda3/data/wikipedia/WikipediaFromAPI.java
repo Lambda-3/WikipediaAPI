@@ -51,27 +51,27 @@ import java.util.Date;
 import java.util.zip.GZIPInputStream;
 
 
-public class Wikipedia {
+public class WikipediaFromAPI implements WikipediaAPI {
 
-    private final static Logger log = LoggerFactory.getLogger(Wikipedia.class);
+    private final static Logger log = LoggerFactory.getLogger(WikipediaFromAPI.class);
 
     private final static String PARAMETER = "?action=query&prop=extracts|info&format=json&explaintext=1&titles=";
     private static final String ENCODING = "UTF-8";
 
-    private Config config = ConfigFactory.load().getConfig("wiki-api");
+    private Config config = ConfigFactory.load().getConfig("wiki-api.api");
 
     private String apiUrl;
     private String userAgent = config.getString("user-agent");
 
-    public Wikipedia() {
+    public WikipediaFromAPI() {
         this.apiUrl = "https://" + config.getString("url") + "/w/api.php";
-        log.info("Wikipedia module initialized with URL: {}", this.apiUrl);
+        log.info("WikipediaFromAPI module initialized with URL: {}", this.apiUrl);
     }
 
-    public Wikipedia(String api) {
+    public WikipediaFromAPI(String api) {
         this.apiUrl = "https://" + api + "/w/api.php";
 
-        log.info("Wikipedia module initialized with custom URL: {}", this.apiUrl);
+        log.info("WikipediaFromAPI module initialized with custom URL: {}", this.apiUrl);
     }
 
     private static Date convertDate(String dateString) {
@@ -82,11 +82,12 @@ public class Wikipedia {
      * Returns an instance of WikipediaArticle with the given title as the title.
      * Return null if something else happens which didn't trigger an internal Exception.
      *
-     * @param title Title of the Wikipedia article to get.
+     * @param title Title of the WikipediaFromAPI article to get.
      * @return instance of WikipediaArticle corresponding to the given title
-     * @throws WikipediaArticleNotFoundException Thrown if the title is not found within Wikipedia
-     * @throws WikipediaAccessException          Thrown if the connection to Wikipedia breaks.
+     * @throws WikipediaArticleNotFoundException Thrown if the title is not found within WikipediaFromAPI
+     * @throws WikipediaAccessException          Thrown if the connection to WikipediaFromAPI breaks.
      */
+    @Override
     public WikipediaArticle fetchArticle(String title) throws WikipediaArticleNotFoundException, WikipediaAccessException {
         try {
             return internalFetchArticle(title);

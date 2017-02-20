@@ -1,6 +1,6 @@
 /*
  * ==========================License-Start=============================
- * wiki-api : WikipediaTest
+ * wiki-api : WikipediaFromDumpTest
  *
  * Copyright © 2017 Lambda³
  *
@@ -35,11 +35,11 @@ import org.lambda3.data.wikipedia.model.WikipediaArticle;
 
 import java.util.Date;
 
-public class WikipediaTest {
+public class WikipediaFromAPITest {
 
     @Test
     public void testFetchArticlePassau() throws WikipediaAccessException, WikipediaArticleNotFoundException {
-        Wikipedia w = new Wikipedia();
+        WikipediaAPI w = new WikipediaFromAPI();
         WikipediaArticle article = w.fetchArticle("Passau");
 
         Assert.assertNotNull(article.getTitle());
@@ -54,7 +54,7 @@ public class WikipediaTest {
 
     @Test(expected = WikipediaArticleNotFoundException.class)
     public void testNonExistentArticle() throws WikipediaAccessException, WikipediaArticleNotFoundException {
-        Wikipedia w = new Wikipedia();
+        WikipediaFromAPI w = new WikipediaFromAPI();
         w.fetchArticle("JunitException");
     }
 

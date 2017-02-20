@@ -34,7 +34,7 @@ import java.text.DateFormat;
 import java.util.Date;
 
 /**
- * Represents an article from Wikipedia.
+ * Represents an article from WikipediaAPI.
  */
 public class WikipediaArticle {
 
@@ -43,6 +43,12 @@ public class WikipediaArticle {
     private final String title;
     private final String text;
     private final Date date;
+
+    public WikipediaArticle(String title, String text) {
+        this.title = title;
+        this.text = text;
+        this.date = null;
+    }
 
     public WikipediaArticle(String title, String text, Date date) {
         this.title = title;
@@ -74,7 +80,7 @@ public class WikipediaArticle {
 
 
     /**
-     * Returns this Wikipedia as a JSON-encoded string.
+     * Returns this WikipediaFromAPI as a JSON-encoded string.
      *
      * @return This article as JSON
      */
