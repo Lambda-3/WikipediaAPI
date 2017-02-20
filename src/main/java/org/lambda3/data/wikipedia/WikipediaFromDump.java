@@ -106,16 +106,20 @@ public class WikipediaFromDump implements WikipediaAPI {
     @Override
     public WikipediaArticle fetchArticle(String title) throws WikipediaArticleNotFoundException, WikipediaAccessException {
 
+        final Page page;
         try {
-            final Page page = wiki.getPage(title);
+            page = wiki.getPage(title);
+        } catch (WikiApiException e) {
+            throw new WikipediaArticleNotFoundException();
+        }
 
+        try {
             String plainText = page.getPlainText();
 
             ParsedPage parsedPage = parser.parse(plainText);
             String articleText = parsedPage.getText();
 
             return new WikipediaArticle(page.getTitle().getPlainTitle(), articleText);
-
 
         } catch (WikiApiException e) {
             log.error("The article could not be loaded.", e);
