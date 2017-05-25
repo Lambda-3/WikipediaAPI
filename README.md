@@ -37,3 +37,7 @@ You then have a few possibilities to interact with the article object.
     Date date = article.getDate()
     
 Small configuration can be done in `reference.conf`
+
+## Contributors (alphabetical order)
+- Bernhard Bermeitinger
+- Siegfried Handschuh
