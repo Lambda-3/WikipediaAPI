@@ -1,5 +1,8 @@
 .idea/misc.xml
 *.local.conf
+conf
+logs
+
 # Created by https://www.gitignore.io/api/java,intellij,maven
 
 ### Intellij ###
