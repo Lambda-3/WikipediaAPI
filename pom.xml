@@ -25,30 +25,46 @@
   ~ THE SOFTWARE.
   ~ ==========================License-End==============================
   -->
-
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.lambda3.data</groupId>
-    <artifactId>wiki-api</artifactId>
-    <version>1.0.0</version>
+    <groupId>org.lambda3.data.wikipedia</groupId>
+    <artifactId>wikipedia-api</artifactId>
+    <version>2.0.0</version>
 
     <description>
         Small library that accesses the English Wikipedia API to download articles.
         Or it uses the JWPL Core dump database.
     </description>
 
-    <packaging>jar</packaging>
+    <scm>
+        <connection>scm:git:https://github.com/Lambda-3/WikipediaAPI</connection>
+        <developerConnection>scm:git:https://github.com/Lambda-3/WikipediaAPI</developerConnection>
+        <url>https://github.com/Lambda-3/WikipediaAPI</url>
+    </scm>
+
+    <organization>
+        <name>Lambda^3</name>
+        <url>http://lambda3.org</url>
+    </organization>
+
+    <modules>
+        <module>wikipedia-core</module>
+    </modules>
+
+    <inceptionYear>2017</inceptionYear>
+
+    <packaging>pom</packaging>
 
     <properties>
-        <logback.version>1.1.8</logback.version>
-
-        <jwpl.version>1.1.0</jwpl.version>
+        <logback.version>1.2.2</logback.version>
+        <slf4j.version>1.7.25</slf4j.version>
 
         <jdk.version>1.8</jdk.version>
         <junit.version>4.12</junit.version>
+        <testng.version>6.11</testng.version>
 
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -57,121 +73,121 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
-                <groupId>de.tudarmstadt.ukp.wikipedia</groupId>
-                <artifactId>de.tudarmstadt.ukp.wikipedia</artifactId>
-                <version>${jwpl.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-                <exclusions>
-                    <exclusion>
-                        <groupId>junit</groupId>
-                        <artifactId>junit</artifactId>
-                    </exclusion>
-                </exclusions>
+                <groupId>com.typesafe</groupId>
+                <artifactId>config</artifactId>
+                <version>1.3.1</version>
+            </dependency>
+            <dependency>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+                <version>${logback.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-api</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+
+            <!-- Test Dependencies -->
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+                <scope>test</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.testng</groupId>
+                <artifactId>testng</artifactId>
+                <version>${testng.version}</version>
+                <scope>test</scope>
             </dependency>
         </dependencies>
     </dependencyManagement>
 
-    <dependencies>
-        <dependency>
-            <groupId>com.typesafe</groupId>
-            <artifactId>config</artifactId>
-            <version>1.3.1</version>
-        </dependency>
-        <dependency>
-            <groupId>com.google.code.gson</groupId>
-            <artifactId>gson</artifactId>
-            <version>2.8.0</version>
-        </dependency>
-        <dependency>
-            <groupId>joda-time</groupId>
-            <artifactId>joda-time</artifactId>
-            <version>2.9.7</version>
-        </dependency>
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <version>${logback.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>6.0.5</version>
-        </dependency>
-        <dependency>
-            <groupId>de.tudarmstadt.ukp.wikipedia</groupId>
-            <artifactId>de.tudarmstadt.ukp.wikipedia.api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>de.tudarmstadt.ukp.wikipedia</groupId>
-            <artifactId>de.tudarmstadt.ukp.wikipedia.util</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>de.tudarmstadt.ukp.wikipedia</groupId>
-            <artifactId>de.tudarmstadt.ukp.wikipedia.parser</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>de.tudarmstadt.ukp.wikipedia</groupId>
-            <artifactId>de.tudarmstadt.ukp.wikipedia.datamachine</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>${junit.version}</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
-
     <build>
-        <finalName>wiki-api</finalName>
         <plugins>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.6.1</version>
-                <inherited>true</inherited>
-                <configuration>
-                    <source>${jdk.version}</source>
-                    <target>${jdk.version}</target>
-                </configuration>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>versions-maven-plugin</artifactId>
+                <version>2.3</version>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>3.0.1</version>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>buildnumber-maven-plugin</artifactId>
+                <version>1.4</version>
                 <executions>
                     <execution>
-                        <id>attach-sources</id>
+                        <phase>validate</phase>
                         <goals>
-                            <goal>jar-no-fork</goal>
+                            <goal>create</goal>
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>3.0.2</version>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>3.0.0</version>
                 <configuration>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
+                    <doCheck>false</doCheck>
+                    <doUpdate>false</doUpdate>
+                    <getRevisionOnlyOnce>true</getRevisionOnlyOnce>
                 </configuration>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                    </execution>
-                </executions>
             </plugin>
         </plugins>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.6.1</version>
+                    <configuration>
+                        <source>${jdk.version}</source>
+                        <target>${jdk.version}</target>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <version>2.20</version>
+                    <configuration>
+                        <includes>
+                            <include>**/Test*.java</include>
+                            <include>**/*Test.java</include>
+                            <include>**/*Tests.java</include>
+                            <include>**/*TestCase.java</include>
+                        </includes>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-source-plugin</artifactId>
+                    <version>3.0.1</version>
+                    <executions>
+                        <execution>
+                            <id>attach-sources</id>
+                            <phase>verify</phase>
+                            <goals>
+                                <goal>jar-no-fork</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>3.0.2</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-assembly-plugin</artifactId>
+                    <version>3.0.0</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
+
+    <profiles>
+        <profile>
+            <id>server</id>
+            <modules>
+                <module>wikipedia-rest</module>
+            </modules>
+        </profile>
+    </profiles>
 
 </project>
