@@ -35,6 +35,7 @@ import org.joda.time.DateTime;
 import org.lambda3.data.wikipedia.exceptions.WikipediaAccessException;
 import org.lambda3.data.wikipedia.exceptions.WikipediaArticleNotFoundException;
 import org.lambda3.data.wikipedia.model.WikipediaArticle;
+import org.lambda3.data.wikipedia.model.WikipediaArticleBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -136,11 +137,13 @@ public class WikipediaFromAPI implements WikipediaAPI {
                 throw new WikipediaArticleNotFoundException();
             }
 
-            return new WikipediaArticle(
-                    article.get("title").getAsString(),
-                    article.get("extract").getAsString(),
-                    convertDate(article.get("touched").getAsString()),
-                    article.get("pageid").getAsInt());
+
+            return new WikipediaArticleBuilder()
+                    .addPageId(article.get("pageid").getAsInt())
+                    .addTitle(article.get("title").getAsString())
+                    .addText(article.get("extract").getAsString())
+                    .addDate(convertDate(article.get("touched").getAsString()))
+                    .build();
 
         } catch (UnsupportedEncodingException e) {
             log.error("The given encoding is not supported", e);

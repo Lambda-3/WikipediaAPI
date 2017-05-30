@@ -1,6 +1,6 @@
 /*
  * ==========================License-Start=============================
- * wikipedia-core : WikipediaArticle
+ * wikipedia-core : WikipediaArticleBuilder
  *
  * Copyright © 2017 Lambda³
  *
@@ -27,63 +27,58 @@
 
 package org.lambda3.data.wikipedia.model;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 import java.util.Date;
 
 /**
- * Represents an article from WikipediaAPI.
+ *
  */
-public class WikipediaArticle {
+public class WikipediaArticleBuilder {
 
-    private final static Gson GSON = new GsonBuilder().create();
+    private String title;
+    private Integer pageId;
+    private String text;
+    private Date date;
 
-    private final String title;
-    private final String text;
-    private final Date date;
-    private final Integer pageId;
-
-    WikipediaArticle(WikipediaArticleBuilder builder) {
-        this.title = builder.getTitle();
-        this.text = builder.getText();
-        this.date = builder.getDate();
-        this.pageId = builder.getPageId();
+    public WikipediaArticleBuilder() {
     }
 
-    public String getTitle() {
+    public WikipediaArticleBuilder addTitle(String title) {
+        this.title = title;
+        return this;
+    }
+
+    public WikipediaArticleBuilder addPageId(Integer pageId) {
+        this.pageId = pageId;
+        return this;
+    }
+
+    public WikipediaArticleBuilder addText(String text) {
+        this.text = text;
+        return this;
+    }
+
+    public WikipediaArticleBuilder addDate(Date date) {
+        this.date = date;
+        return this;
+    }
+
+    String getTitle() {
         return title;
     }
 
-    public String getText() {
-        return text;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public Integer getPageId() {
+    Integer getPageId() {
         return pageId;
     }
 
-    @Override
-    public String toString() {
-        return "WikipediaArticle{" +
-                "title='" + title + '\'' +
-                ", pageId='" + pageId + '\'' +
-                ", text='" + text + '\'' +
-                '}';
+    String getText() {
+        return text;
     }
 
-
-    /**
-     * Returns this WikipediaFromAPI as a JSON-encoded string.
-     *
-     * @return This article as JSON
-     */
-    public String toJSON() {
-        return GSON.toJson(this);
+    Date getDate() {
+        return date;
     }
 
+    public WikipediaArticle build() {
+        return new WikipediaArticle(this);
+    }
 }

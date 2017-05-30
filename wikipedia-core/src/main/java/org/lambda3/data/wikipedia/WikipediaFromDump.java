@@ -42,6 +42,7 @@ import de.tudarmstadt.ukp.wikipedia.parser.mediawiki.MediaWikiParserFactory;
 import org.lambda3.data.wikipedia.exceptions.WikipediaAccessException;
 import org.lambda3.data.wikipedia.exceptions.WikipediaArticleNotFoundException;
 import org.lambda3.data.wikipedia.model.WikipediaArticle;
+import org.lambda3.data.wikipedia.model.WikipediaArticleBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -119,7 +120,11 @@ public class WikipediaFromDump implements WikipediaAPI {
             ParsedPage parsedPage = parser.parse(plainText);
             String articleText = parsedPage.getText();
 
-            return new WikipediaArticle(page.getTitle().getPlainTitle(), articleText, null, page.getPageId());
+            return new WikipediaArticleBuilder()
+                    .addPageId(page.getPageId())
+                    .addTitle(page.getTitle().getPlainTitle())
+                    .addText(articleText)
+                    .build();
 
         } catch (WikiApiException e) {
             log.error("The article could not be loaded.", e);
