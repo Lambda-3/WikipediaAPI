@@ -3,7 +3,7 @@ version: '3'
 services:
 
   wikipedia:
-    image: lambdacube/wikipedia-api:2.0.0
+    image: lambdacube/wikipedia-api:latest
     ports:
       - "8080:8080"
     volumes:
