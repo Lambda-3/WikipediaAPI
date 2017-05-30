@@ -55,9 +55,11 @@ public class WikipediaFromDumpTest {
         Assert.assertNotNull(article.getTitle());
         Assert.assertNotNull(article.getText());
         Assert.assertNull(article.getDate());
+        Assert.assertNotNull(article.getPageId());
 
         Assert.assertEquals("Passau", article.getTitle());
         Assert.assertTrue(article.getText().length() > 1000);
+        Assert.assertEquals(new Integer(227880), article.getPageId());
 
     }
 

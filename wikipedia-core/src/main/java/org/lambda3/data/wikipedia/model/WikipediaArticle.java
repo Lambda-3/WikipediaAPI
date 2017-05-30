@@ -43,17 +43,21 @@ public class WikipediaArticle {
     private final String title;
     private final String text;
     private final Date date;
+    private final Integer pageId;
 
     public WikipediaArticle(String title, String text) {
-        this.title = title;
-        this.text = text;
-        this.date = null;
+        this(title, text, null);
     }
 
     public WikipediaArticle(String title, String text, Date date) {
+        this(title, text, null, null);
+    }
+
+    public WikipediaArticle(String title, String text, Date date, Integer pageId) {
         this.title = title;
         this.text = text;
         this.date = date;
+        this.pageId = pageId;
     }
 
     public String getTitle() {
@@ -68,6 +72,9 @@ public class WikipediaArticle {
         return date;
     }
 
+    public Integer getPageId() {
+        return pageId;
+    }
 
     @Override
     public String toString() {

@@ -119,7 +119,7 @@ public class WikipediaFromDump implements WikipediaAPI {
             ParsedPage parsedPage = parser.parse(plainText);
             String articleText = parsedPage.getText();
 
-            return new WikipediaArticle(page.getTitle().getPlainTitle(), articleText);
+            return new WikipediaArticle(page.getTitle().getPlainTitle(), articleText, null, page.getPageId());
 
         } catch (WikiApiException e) {
             log.error("The article could not be loaded.", e);

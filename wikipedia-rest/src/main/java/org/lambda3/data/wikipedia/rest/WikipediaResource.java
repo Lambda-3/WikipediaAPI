@@ -71,11 +71,11 @@ public class WikipediaResource {
             WikipediaArticle article = null;
             switch (request.getSourceType()) {
                 case DUMP:
-                    log.debug("Requesting article '{}' from live API.", request.getArticleName());
+                    log.debug("Requesting article '{}' from dump API.", request.getArticleName());
                     article = this.dumpResource.fetchArticle(request.getArticleName());
                     break;
                 case LIVE:
-                    log.debug("Requesting article '{}' from dump API.", request.getSourceType());
+                    log.debug("Requesting article '{}' from live API.", request.getSourceType());
                     article = this.liveResource.fetchArticle(request.getArticleName());
                     break;
             }

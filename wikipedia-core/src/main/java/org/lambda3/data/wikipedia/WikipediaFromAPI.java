@@ -136,11 +136,11 @@ public class WikipediaFromAPI implements WikipediaAPI {
                 throw new WikipediaArticleNotFoundException();
             }
 
-            String articleTitle = article.get("title").getAsString();
-            String articleText = article.get("extract").getAsString();
-            Date articleDate = convertDate(article.get("touched").getAsString());
-
-            return new WikipediaArticle(articleTitle, articleText, articleDate);
+            return new WikipediaArticle(
+                    article.get("title").getAsString(),
+                    article.get("extract").getAsString(),
+                    convertDate(article.get("touched").getAsString()),
+                    article.get("pageid").getAsInt());
 
         } catch (UnsupportedEncodingException e) {
             log.error("The given encoding is not supported", e);

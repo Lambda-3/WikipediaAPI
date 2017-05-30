@@ -49,10 +49,12 @@ public class WikipediaFromAPITest {
         Assert.assertNotNull(article.getTitle());
         Assert.assertNotNull(article.getText());
         Assert.assertNotNull(article.getDate());
+        Assert.assertNotNull(article.getPageId());
 
         Assert.assertEquals("Passau", article.getTitle());
         Assert.assertTrue(article.getText().length() > 1000);
         Assert.assertTrue(article.getDate().before(new Date()));
+        Assert.assertEquals(new Integer(227880), article.getPageId());
 
     }
 
