@@ -29,11 +29,11 @@ package org.lambda3.data.wikipedia;
 
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
-import org.junit.Assert;
-import org.junit.Test;
 import org.lambda3.data.wikipedia.exceptions.WikipediaAccessException;
 import org.lambda3.data.wikipedia.exceptions.WikipediaArticleNotFoundException;
 import org.lambda3.data.wikipedia.model.WikipediaArticle;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
 import java.util.Date;
 
@@ -58,7 +58,7 @@ public class WikipediaFromAPITest {
 
     }
 
-    @Test(expected = WikipediaArticleNotFoundException.class)
+    @Test(expectedExceptions = WikipediaArticleNotFoundException.class)
     public void testNonExistentArticle() throws WikipediaAccessException, WikipediaArticleNotFoundException {
         Config config = ConfigFactory.load();
 

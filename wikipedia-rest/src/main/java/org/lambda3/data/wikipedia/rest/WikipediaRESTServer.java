@@ -30,7 +30,6 @@ package org.lambda3.data.wikipedia.rest;
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import org.eclipse.jetty.server.Server;
-import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.jetty.JettyHttpContainerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.ServerProperties;
@@ -56,16 +55,7 @@ class WikipediaRESTServer {
         log.debug("Initializing Wikipedia REST Server");
 
 
-        ResourceConfig rc = new ResourceConfig();
-
-        rc.property(ServerProperties.FEATURE_AUTO_DISCOVERY_DISABLE, true);
-        rc.property(ServerProperties.BV_SEND_ERROR_IN_RESPONSE, true); // TODO: remove in production
-
-        // basic features
-        rc.register(JacksonFeature.class);
-        rc.register(ValidationFeature.class);
-
-        rc.register(new WikipediaResource(config));
+        ResourceConfig rc = generateResourceConfig(config);
 
         String uriString = config.getString("wiki-api.server.url");
 
@@ -74,6 +64,21 @@ class WikipediaRESTServer {
 
         log.info("Server successfully initialized, waiting for start");
 
+    }
+
+    static ResourceConfig generateResourceConfig(Config config) {
+        ResourceConfig rc = new ResourceConfig();
+
+        rc.property(ServerProperties.FEATURE_AUTO_DISCOVERY_DISABLE, true);
+        rc.property(ServerProperties.BV_SEND_ERROR_IN_RESPONSE, true);
+
+        // basic features
+        rc.register(JsonFeature.class);
+        rc.register(ValidationFeature.class);
+
+        rc.register(new WikipediaResource(config));
+
+        return rc;
     }
 
     void start() {

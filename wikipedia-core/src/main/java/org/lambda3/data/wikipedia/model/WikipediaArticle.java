@@ -39,10 +39,14 @@ public class WikipediaArticle {
 
     private final static Gson GSON = new GsonBuilder().create();
 
-    private final String title;
-    private final String text;
-    private final Date date;
-    private final Integer pageId;
+    private String title;
+    private String text;
+    private Date date;
+    private Integer pageId;
+
+    // for json deserializer
+    private WikipediaArticle() {
+    }
 
     WikipediaArticle(WikipediaArticleBuilder builder) {
         this.title = builder.getTitle();

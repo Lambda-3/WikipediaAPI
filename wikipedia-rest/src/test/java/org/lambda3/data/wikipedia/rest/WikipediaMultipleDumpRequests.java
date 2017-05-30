@@ -1,6 +1,6 @@
 /*
  * ==========================License-Start=============================
- * wikipedia-core : WikipediaFromDumpTest
+ * wikipedia-rest : WikipediaMultipleDumpRequests
  *
  * Copyright © 2017 Lambda³
  *
@@ -25,51 +25,24 @@
  * ==========================License-End==============================
  */
 
-package org.lambda3.data.wikipedia;
+package org.lambda3.data.wikipedia.rest;
 
-import com.typesafe.config.Config;
-import com.typesafe.config.ConfigFactory;
-import org.lambda3.data.wikipedia.exceptions.WikipediaAccessException;
-import org.lambda3.data.wikipedia.exceptions.WikipediaArticleNotFoundException;
 import org.lambda3.data.wikipedia.model.WikipediaArticle;
+import org.lambda3.data.wikipedia.model.WikipediaArticleBuilder;
 import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-public class WikipediaFromDumpTest {
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
-    private static WikipediaAPI wikipediaDump;
 
-    @BeforeClass
-    public static void setup() {
-        Config config = ConfigFactory.parseResources("wiki-api.local.conf");
-
-        wikipediaDump = new WikipediaFromDump(config);
-    }
+/**
+ *
+ */
+public class WikipediaMultipleDumpRequests extends ServerTest {
 
     @Test
-    public void testFetchArticlePassau() throws WikipediaAccessException, WikipediaArticleNotFoundException {
-
-        WikipediaArticle article = wikipediaDump.fetchArticle("Passau");
-
-        Assert.assertNotNull(article.getTitle());
-        Assert.assertNotNull(article.getText());
-        Assert.assertNull(article.getDate());
-        Assert.assertNotNull(article.getPageId());
-
-        Assert.assertEquals("Passau", article.getTitle());
-        Assert.assertTrue(article.getText().length() > 1000);
-        Assert.assertEquals(new Integer(227880), article.getPageId());
-
-    }
-
-    @Test(expectedExceptions = WikipediaArticleNotFoundException.class)
-    public void testNonExistentArticle() throws WikipediaAccessException, WikipediaArticleNotFoundException {
-        wikipediaDump.fetchArticle("JunitException");
-    }
-
-    @Test
-    public void testFetchMultipleArticles() throws WikipediaAccessException, WikipediaArticleNotFoundException {
+    public void testFetchMultipleArticles() {
         String[] articles = {
                 "George Washington", "John Adams", "Thomas Jefferson", "James Madison", "James Monroe",
                 "John Quincy Adams", "Andrew Jackson", "Martin Van Buren", "William Henry Harrison", "John Tyler",
@@ -83,14 +56,36 @@ public class WikipediaFromDumpTest {
         };
 
         for (String articleName : articles) {
-            WikipediaArticle article = wikipediaDump.fetchArticle(articleName);
-            Assert.assertNotNull(article.getTitle());
-            Assert.assertNotNull(article.getText());
-            Assert.assertNull(article.getDate());
-            Assert.assertNotNull(article.getPageId());
 
-            Assert.assertEquals(articleName, article.getTitle());
-            Assert.assertTrue(article.getText().length() > 1000);
+            WikipediaArticle expectedArticle = new WikipediaArticleBuilder()
+                    .addTitle(articleName)
+                    .build();
+
+            WikipediaRequest request = new WikipediaRequest();
+            request.setArticleName(articleName);
+            request.setSourceType(SourceType.DUMP);
+
+            final Response response = target("/")
+                    .path("article")
+                    .queryParam("articleName", request.getArticleName())
+                    .queryParam("sourceType", request.getSourceType())
+                    .request(MediaType.TEXT_PLAIN)
+                    .accept(MediaType.APPLICATION_JSON_TYPE)
+                    .get();
+
+            Assert.assertEquals(response.getStatus(), 200);
+            Assert.assertTrue(response.hasEntity());
+
+            WikipediaArticle actual = response.readEntity(WikipediaArticle.class);
+
+            Assert.assertNotNull(actual);
+            Assert.assertNotNull(actual.getText());
+            Assert.assertTrue(actual.getText().length() > 1000);
+            Assert.assertNotNull(actual.getPageId());
+            Assert.assertTrue(actual.getPageId() > 0, "An article's page id is a positive integer.");
+            Assert.assertNull(actual.getDate()); // articles from dump have no date
+
+            Assert.assertEquals(actual.getTitle(), expectedArticle.getTitle());
         }
 
     }
