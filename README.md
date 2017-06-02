@@ -6,6 +6,9 @@ Requirements:
 * Java 8
 * Maven
 
+Optional requirement (but recommended)
+* JWPL Pro dump accessible as SQL-Server
+
 Build with 
 
     mvn package
@@ -14,7 +17,7 @@ Disable Unit tests with
     
     mvn package -DskipTests
 
-## Usage
+## Usage as Library
 Install first with (currently not in any maven repo) 
 
     mvn install
@@ -26,7 +29,7 @@ and get a new article:
     WikipediaAPI dump = new WikipediaFromDump(config);
     WikipediaArticle article = dump.fetchArticle("Passau");
 
-Or you could query the live wikipedia API (but be aware of rate limiting)
+Or you could query the live Wikipedia API (but be aware of rate limiting)
 
     Config config = ConfigFactory.load() // load your config
     WikipediaAPI live = new WikipediaFromAPI(config);
@@ -58,8 +61,8 @@ You can either build and run your own docker image:
         -v $(pwd)/logs:/usr/share/wikipedia/logs \
         wikiapi
 
-Or use the `docker-compose.yml` file to download the image from hub.docker.com
-and run it immediately.
+Or use the `docker-compose.yml` file to pull the prebuilt image from hub.docker.com
+and run it immediately. If you do this, you only need this file and a config file in `conf/wikipedia.local.conf` and a `conf/logback.xml` to configure logging.
 
     docker-compose up
 
