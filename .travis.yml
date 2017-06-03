@@ -1,0 +1,13 @@
+language: java
+script: mvn -P server package -DskipTests
+jdk: oraclejdk8
+cache:
+  directories:
+    - "$HOME/.m2"
+
+notification:
+  slack:
+    on_success: always
+    on_failure: always
+    rooms:
+      secure: Gf1q4mRyquHB+pntV2mELJ7RwoUh/ks6CEabtP0HCwBlfi+UkjTcSVwAi2UOI7dM+cmWVSxA8K1/HCVjOy3xLIxWKrJqiO8zLfUN+Kw06p7Q+xudpy4YXjlauYqO/ET4mToT514jb5kUXYr1g4yhr0wmksq1dk3aBXMwTuTPgkaAa0AkaYJLJD5/IQxkRdR4h81BfxM5YgKIB2a0b2rWAhk5s1AqtYPCOBMb/ENupY3iI9lCqyV5Ywgnv0b/p50wzXG+/k8Vb95QDUCtXJWk1tJP5cMNt4BTzMLHn5FBFaFpiPqT8L0DrD0aysVYkqpRRucahFjvWMn8OHsAqAPL2CHUXOUfH1Ml3ihrs7Y68CkHrydGHy/GNwCHsYEfJnKrCssBw5/0eDLC+ud+aCDb/Ql8JXsTcuV6YwK3ETM3tIebtdKXyZGr7jX5NSTKUUH5rqcNgULu3ElQdKlwuO1v3d+I5jmxk3mv1ZaC4uiW4I6tUDSlbr2RWAYFQX8tkn3H7dItUUiaNqA0gFbyxR6j3P5ka4ymdxmSYxZwBVhiQvPS5mqEWrwk8HF9B015EIzRH4R3b9zayZtmTzyN2r59cCI/CLXlGk5pxFlRFW2o7HqKiZ2pkmO1KM6UfXNGiBBMd1uAWzd0Aa3khMZcYeTfvG8jyAZLz1IvuV4h7JAExtU=
