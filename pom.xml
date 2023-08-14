@@ -59,7 +59,7 @@
     <packaging>pom</packaging>
 
     <properties>
-        <logback.version>1.4.9</logback.version>
+        <logback.version>1.4.11</logback.version>
         <slf4j.version>2.0.7</slf4j.version>
 
         <jdk.version>1.8</jdk.version>
