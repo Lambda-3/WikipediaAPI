@@ -42,7 +42,7 @@
 
     <properties>
         <server.mainClass>org.lambda3.data.wikipedia.rest.WikipediaService</server.mainClass>
-        <jersey.version>3.1.4</jersey.version>
+        <jersey.version>3.1.5</jersey.version>
         <jackson.version>2.16.0</jackson.version>
     </properties>
 
